@@ -44,9 +44,9 @@ const checkDatabase = () => {
         }
       }).then(response => response.json())
         .then(() => {
-          const transaction = db.transaction(['pending', 'readwrite']);
-          const budgetStore = transaction.objectStore('pending');
-          budgetStore.clear();
+          const transaction = db.transaction(['pending'], 'readwrite');
+          const store = transaction.objectStore('pending');
+          store.clear();
         });
     }
   };
