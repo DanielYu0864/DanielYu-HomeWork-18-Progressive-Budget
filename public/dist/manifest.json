@@ -38,6 +38,5 @@
   "start_url": "/",
   "description": "An application that allows you to view different news articles and save your favorites.",
   "background_color": "#01579b",
-  "theme_color": "#ffffff",
-  "theme-color": "#ffffff"
+  "theme_color": "#ffffff"
 }
