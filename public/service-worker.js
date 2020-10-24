@@ -4,15 +4,6 @@ const CACHE_FILES = [
   '/styles.css',
   '/db.js',
   '/index.js',
-  '/dist/manifest.json',
-  '/dist/assets/icons/icon_96x96.png',
-  '/dist/assets/icons/icon_128x128.png',
-  '/dist/assets/icons/icon_192x192.png',
-  '/dist/assets/icons/icon_256x256.png',
-  '/dist/assets/icons/icon_384x384.png',
-  '/dist/assets/icons/icon_512x512.png',
-  'https://cdn.jsdelivr.net/npm/chart.js@2.8.0',
-  'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
 ];
 
 const CACHE_NAME = "static-cache-v2";
@@ -38,12 +29,14 @@ self.addEventListener('activate', (event) => {
     caches
       .keys()
       .then((cacheNames) => {
-        return cacheNames.filter((cacheName) => !currentCaches.includes(cacheName));
+        return cacheNames.filter((cacheName) => currentCaches.includes(cacheName));
       })
       .then((cachesToDelete) => {
         return Promise.all(
           cachesToDelete.map((cacheToDelete) => {
-            return caches.delete(cacheToDelete);
+            if (cacheToDelete !== CACHE_NAME && cacheToDelete !== DATA_NAME) {
+              return caches.delete(cacheToDelete);
+            }
           })
         );
       })
