@@ -23,25 +23,21 @@ self.addEventListener('install', function(evt) {
 
 
 // The activate handler takes care of cleaning up old caches.
-self.addEventListener('activate', (event) => {
-  const currentCaches = [CACHE_NAME, DATA_NAME];
-  event.waitUntil(
-    caches
-      .keys()
-      .then((cacheNames) => {
-        return cacheNames.filter((cacheName) => currentCaches.includes(cacheName));
-      })
-      .then((cachesToDelete) => {
-        return Promise.all(
-          cachesToDelete.map((cacheToDelete) => {
-            if (cacheToDelete !== CACHE_NAME && cacheToDelete !== DATA_NAME) {
-              return caches.delete(cacheToDelete);
-            }
-          })
-        );
-      })
-      .then(() => self.clients.claim())
+self.addEventListener("activate", function(evt) {
+  evt.waitUntil(
+    caches.keys().then(keyList => {
+      return Promise.all(
+        keyList.map(key => {
+          if (key !== CACHE_NAME && key !== DATA_NAME) {
+            console.log("Removing old cache data", key);
+            return caches.delete(key);
+          }
+        })
+      );
+    })
   );
+
+  self.clients.claim();
 });
 
 self.addEventListener('fatch', event => {
